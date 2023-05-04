@@ -1,4 +1,4 @@
-# windows-sql-fci-cluster-automation
+# aws-windows-failover-cluster-automation
 This solution describes the automated approach for setting up the infrastructure needed to setup SQL Server Failover Cluster Instances using Amazon FSx for windows in Multi Availability Zone(AZ). AWS services required for this setup will be provisioned in automated way using CloudFormation template and SQL Server installation and cluster node creation on Amazon EC2 carried out using PowerShell commands.
 
 It uses a highly available Multi-AZ Amazon FSx file system as the shared witness used to store the SQL Server database files. The Amazon FSx file system and EC2 Windows instances that host SQL Server are joined to the same Active Directory domain.
