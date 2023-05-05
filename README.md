@@ -61,7 +61,7 @@ It uses a highly available Multi-AZ Amazon FSx file system as the shared witness
 - PowerShell Scripts
 
 # Code
-The code for this pattern is available on gitlab, in the windows-sql-fci-cluster repository. The code repository contains the following files and folders:
+The code for this pattern is available on github, in the aws-windows-failover-cluster-automation repository. The code repository contains the following files and folders:
 
 - infra-cf.yaml file - Contain cloudformation template to create infrastructure required to setup windows sql fsx failover cluster.
 - ssm.yaml file - Contain cloudformation template to create SSM automation document which gets triggerd upon EC2 launch with tag ADJoined: FSXADD and add the instance to active directory.
@@ -69,16 +69,14 @@ The code for this pattern is available on gitlab, in the windows-sql-fci-cluster
 # Setup your environment
 To pull down the repo 
 ```
-git clone https://gitlab.aws.dev/gwmanish/windows-sql-fci-cluster.git
+git clone https://github.com/aws-samples/aws-windows-failover-cluster-automation.git
 ```
-This creates a folder named `windows-sql-fci-cluster`
+This creates a folder named `aws-windows-failover-cluster-automation`
 
 ## Setup Infrastructure
 This describes the steps to deploy infrastructure needed to setup SQL Server FCI Cluster.
 - Complete all steps mentioned in Pre-Requisites section.
 - Go to AWS Account, login with IAM credentials. Navigate to CloudFormation console and deploy SSM automation document stack. The file name is ssm.yaml. Some parameters need to be provided to run the cf stack for SSM which are listed below.
-
-    StateUnJoinAssociationLoggingBucketName: Will create a s3 bucket for logging purpose so need to provide the name of bucket.
 
     SSMAssociationADUnjoinName: Provide name to be given for SSM Association
 

@@ -1,0 +1,12 @@
+------------------------------------------------------------
+ssm.yaml
+------------------------------------------------------------------------------------------------------------------------
+[33m| WARN W13[0m
+[33m|[0m
+[33m| Resource: ["SSMAssociationIAMPolicy"][0m
+[33m| Line Numbers: [115][0m
+[33m|[0m
+[33m| IAM managed policy should not allow * resource[0m
+
+Failures count: 0
+Warnings count: 1

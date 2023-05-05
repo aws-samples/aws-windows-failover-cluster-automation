@@ -4,9 +4,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Create parameters required for the AD domain join SSM Automation runbooks.
 Parameters:
-  StateUnJoinAssociationLoggingBucketName:
-    Description: 'Specify a name for the logging bucket for association.'
-    Type: String
   SSMAssociationADUnjoinName:
     Description: 'Specify a descriptive name for the association to automate AD domain unjoin. Valid characters are a-z, A-Z, 0-9, and _, -, and . only.'
     Type: String
@@ -24,12 +21,9 @@ Metadata:
           default: AWS Systems Manager Automation runbook and Parameter Store creation
         Parameters:
           - SSMAutomationDocumentName
-          - StateUnJoinAssociationLoggingBucketName
           - SSMAssociationADUnjoinName
           - EventBridgeName
     ParameterLabels:
-      StateUnJoinAssociationLoggingBucketName:
-        default: UnJoin Association Logging Bucket Name
       SSMAssociationADUnjoinName:
         default: AD unjoin association name
       SSMAutomationDocumentName:
@@ -83,7 +77,6 @@ Resources:
   EventBridgeIAMrole:
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: eb-role-trigger-ssm-doc-fsx
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -131,7 +124,10 @@ Resources:
             Action:
               - ec2:RebootInstances
               - ec2:StopInstances
-            Resource: '*'
+              - ec2:CreateTags
+            Resource:
+               - !Sub "arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/*"
+
             Condition:
               StringLike:
                 aws:ResourceTag/ADJoined:
@@ -143,13 +139,23 @@ Resources:
           - Sid: EC2SSMDescribe
             Effect: Allow
             Action:
-              - ec2:CreateTags
               - ec2:DescribeInstances
               - ec2:DescribeTags
               - ssm:DescribeInstanceInformation
+            Resource: "*"
+
+          - Sid: EC2SSMlistAndCommand
+            Effect: Allow
+            Action:
               - ssm:List*
               - ssm:SendCommand
-            Resource: '*'
+            Resource: 
+              - !Sub "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:document/*"
+              - !Sub "arn:aws:ssm:${AWS::Region}::document/AWS-RunPowerShellScript"
+              - !Sub "arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/*"
+              - !Sub "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:managed-instance/*"
+              - !Sub "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:*"
+
           - Sid: SecretMangerreadOnly
             Effect: Allow
             Action:
@@ -158,11 +164,11 @@ Resources:
               - secretsmanager:GetResourcePolicy
               - secretsmanager:GetSecretValue
               - secretsmanager:ListSecretVersionIds
-            Resource: '*'
+            Resource:
+              - !Sub "arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*"
   AutomationExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: automation-assume-role-to-run-ssmdoc-fsx
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -189,28 +195,12 @@ Resources:
           - !GetAtt AutomationExecutionRole.Arn
         DomainJoinActivity:
           - Unjoin
-      OutputLocation:
-         S3Location:
-           OutputS3BucketName: !Ref StateUnJoinAssociationLoggingBucket
       SyncCompliance: AUTO
       Targets:
       - Key: tag:ADJoined
         Values:
         - 'FSXREMOVE'
       AutomationTargetParameterName: InstanceId
-
-  # S3 bucket to logging Association
-
-  StateUnJoinAssociationLoggingBucket:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    #UpdateReplacePolicy: Retain
-    Properties:
-      BucketName: !Ref StateUnJoinAssociationLoggingBucketName
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256
 
   SSMAutomationDocument:
     Type: AWS::SSM::Document

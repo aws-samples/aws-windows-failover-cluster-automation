@@ -212,7 +212,6 @@ Resources:
      Type: AWS::EC2::SecurityGroup
      Properties:
        GroupDescription: Allow access to the Node 1 instances
-       GroupName: !Ref Node1SecurityGroupName
        VpcId:
          Ref: VPC
        Tags:
@@ -222,11 +221,11 @@ Resources:
      Type: AWS::EC2::SecurityGroup
      Properties:
        GroupDescription: Allow access to the Node 2 instances
-       GroupName: !Ref Node2SecurityGroupName
        VpcId:
          Ref: VPC
        SecurityGroupIngress:
        - IpProtocol: -1
+         Description: Allow all traffic from Node 1 SG
          SourceSecurityGroupId:
             Ref: Node1SecurityGroup
        Tags:
@@ -237,7 +236,7 @@ Resources:
     Properties:
       SourceSecurityGroupId:
         Ref: Node2SecurityGroup
-      Description: Ingress Rule for Node 1 SG
+      Description: Allow all traffic from Node 2 SG
       GroupId:
         Ref: Node1SecurityGroup
       IpProtocol: -1
@@ -276,7 +275,6 @@ Resources:
      Type: AWS::EC2::SecurityGroup
      Properties:
        GroupDescription: Allow access from client computer to fsx
-       GroupName: !Ref FSXSecurityGroupName
        VpcId:
          Ref: VPC
        Tags:
@@ -286,171 +284,205 @@ Resources:
        - IpProtocol: tcp
          FromPort: 53
          ToPort: 53
+         Description: Allow port 53 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 5985
          ToPort: 5985
+         Description: Allow port 5985 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 88
          ToPort: 88
+         Description: Allow port 88 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 135
          ToPort: 135
+         Description: Allow port 135 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 389
          ToPort: 389
+         Description: Allow port 389 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 445
          ToPort: 445
+         Description: Allow port 445 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 464
          ToPort: 464
+         Description: Allow port 464 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 636
          ToPort: 636
+         Description: Allow port 636 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 3268
          ToPort: 3268
+         Description: Allow port 3268 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 3269
          ToPort: 3269
+         Description: Allow port 3269 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 9389
          ToPort: 9389
+         Description: Allow port 9389 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 49152
          ToPort: 65535
+         Description: Allow port from 49152 to 65535 from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: tcp
          FromPort: 53
          ToPort: 53
+         Description: Allow port 53 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 5985
          ToPort: 5985
+         Description: Allow port 5985 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 88
          ToPort: 88
+         Description: Allow port 88 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 135
          ToPort: 135
+         Description: Allow port 135 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 389
          ToPort: 389
+         Description: Allow port 389 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 445
          ToPort: 445
+         Description: Allow port 445 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 464
          ToPort: 464
+         Description: Allow port 464 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 636
          ToPort: 636
+         Description: Allow port 636 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 3268
          ToPort: 3268
+         Description: Allow port 3268 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 3269
          ToPort: 3269
+         Description: Allow port 3269 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 9389
          ToPort: 9389
+         Description: Allow port 9389 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: tcp
          FromPort: 49152
          ToPort: 65535
+         Description: Allow port from 49152 to 65535 from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: udp
          FromPort: 53
          ToPort: 53
+         Description: Allow port 53 udp from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: udp
          FromPort: 88
          ToPort: 88
+         Description: Allow port 88 udp from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: udp
          FromPort: 123
          ToPort: 123
+         Description: Allow port 123 udp from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: udp
          FromPort: 389
          ToPort: 389
+         Description: Allow port 389 udp from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: udp
          FromPort: 464
          ToPort: 464
+         Description: Allow port 464 udp from Node1 SG
          SourceSecurityGroupId:
            Ref: Node1SecurityGroup
        - IpProtocol: udp
          FromPort: 53
          ToPort: 53
+         Description: Allow port 53 udp from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: udp
          FromPort: 88
          ToPort: 88
+         Description: Allow port 88 udp from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: udp
          FromPort: 123
          ToPort: 123
+         Description: Allow port 123 udp from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: udp
          FromPort: 389
          ToPort: 389
+         Description: Allow port 389 udp from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
        - IpProtocol: udp
          FromPort: 464
          ToPort: 464
+         Description: Allow port 464 udp from Node2 SG
          SourceSecurityGroupId:
            Ref: Node2SecurityGroup
   SqlFSxRole:
