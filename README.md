@@ -35,6 +35,9 @@ It uses a highly available Multi-AZ Amazon FSx file system as the shared witness
    | VPC | VPC ID |
    | WorkloadInstanceType | Type of EC2 Instance |
 
+
+<mark>Note: In security groups, in general egress/outbound is open to all for communication. It is recommended to use more restrictive egress outbound for specific required ports. </mark>
+
 # Product Versions
 - Windows Server 2012 R2 and SQL Server 2016
 

@@ -241,6 +241,8 @@ Resources:
         Ref: Node1SecurityGroup
       IpProtocol: -1
 
+### Note: In SQL Node security group, in general egress/outbound is open to all for communication. It is recommended to use more restrictive egress outbound for specific required ports.
+
   Node1SecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
@@ -251,6 +253,9 @@ Resources:
       IpProtocol: "-1"
       FromPort: 0
       ToPort: 0
+
+### Note: In SQL Node security group, in general egress/outbound is open to all for communication. It is recommended to use more restrictive egress outbound for specific required ports.
+
   Node2SecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
@@ -261,6 +266,9 @@ Resources:
       IpProtocol: "-1"
       FromPort: 0
       ToPort: 0
+
+### Note: In security group, in general egress/outbound is open to all for communication. It is recommended to use more restrictive egress outbound for specific required ports.
+
   FSXSecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
